@@ -1,14 +1,20 @@
-# Use Eclipse Temurin base image for Java 17
-FROM eclipse-temurin:17-jre-alpine
+FROM maven:3.9.4-eclipse-temurin-17 AS builder
+WORKDIR /build
 
-# Set working directory
+# Copy the entire subfolder, not just root files
+COPY pokemon_trading_cars/pom.xml pokemon_trading_cars/mvnw pokemon_trading_cars/.mvn/ pokemon_trading_cars/src/ ./pokemon_trading_cars/
+
+WORKDIR /build/pokemon_trading_cars
+RUN mvn -B -DskipTests package
+RUN ls -l target  # Debug: list built jars
+
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copy the built jar file (adjust the path if needed)
-COPY target/*.jar app.jar
+# Use the exact subpath for the jar(s)
+COPY --from=builder /build/pokemon_trading_cars/target/*.jar app.jar
 
-# Expose port (adjust if your app uses a different port)
+ENV PORT=8086
 EXPOSE 8086
 
-# Run the Spring Boot app on port 8086
-ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=8086"]
+ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT:-8086}"]
