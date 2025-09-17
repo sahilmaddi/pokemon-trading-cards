@@ -2,7 +2,10 @@ FROM maven:3.9.4-eclipse-temurin-17 AS builder
 WORKDIR /build
 
 # Copy the entire subfolder, not just root files
-COPY pokemon_trading_cars/pom.xml pokemon_trading_cars/mvnw pokemon_trading_cars/.mvn/ pokemon_trading_cars/src/ ./pokemon_trading_cars/
+COPY pom.xml mvnw ./
+COPY .mvn/ .mvn/
+COPY src/ src/
+
 
 WORKDIR /build/pokemon_trading_cars
 RUN mvn -B -DskipTests package
