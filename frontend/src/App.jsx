@@ -2,10 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
-
-
-const API_URL = 'http://localhost:8086/api/cards';
-const AI_API_URL = 'http://localhost:8086/api/cards/ai';
+import { API_URL, AI_API_URL } from './config/api';
 
 
 
@@ -101,7 +98,7 @@ function App() {
           ◀
         </span>
       </button>
-      <button onClick={async () => { await fetch('/api/cards/ai', { method: 'POST' }); fetchCards(); }} style={{ marginBottom: 16, marginLeft: 8 }}>
+      <button onClick={async () => { await fetch(AI_API_URL, { method: 'POST' }); fetchCards(); }} style={{ marginBottom: 16, marginLeft: 8 }}>
         Re-Generate All Cards
       </button>
 
