@@ -1,5 +1,4 @@
 # 1) Build stage: use Maven to build the Spring Boot jar
-<<<<<<< HEAD
 FROM maven:3.9.4-eclipse-temurin-21 AS builder
 
 WORKDIR /build
