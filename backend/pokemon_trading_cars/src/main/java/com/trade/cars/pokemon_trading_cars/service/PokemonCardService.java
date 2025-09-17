@@ -84,25 +84,32 @@ public class PokemonCardService {
             String type = "Unknown";
             Object typesObj = pokeData.get("types");
             if (typesObj instanceof java.util.List && !((java.util.List<?>) typesObj).isEmpty()) {
-                Object typeInfoObj = ((java.util.Map<?,?>) ((java.util.List<?>) typesObj).get(0)).get("type");
-                if (typeInfoObj instanceof java.util.Map typeMap) {
-                    Object typeName = typeMap.get("name");
-                    if (typeName instanceof String s) type = s;
+                Object first = ((java.util.List<?>) typesObj).get(0);
+                if (first instanceof java.util.Map) {
+                    Object typeInfoObj = ((java.util.Map<?,?>) first).get("type");
+                    if (typeInfoObj instanceof java.util.Map) {
+                        java.util.Map<?,?> typeMap = (java.util.Map<?,?>) typeInfoObj;
+                        Object typeName = typeMap.get("name");
+                        if (typeName instanceof String) type = (String) typeName;
+                    }
                 }
             }
             // HP
             int hp = 50;
             Object statsObj = pokeData.get("stats");
-            if (statsObj instanceof java.util.List statsList) {
+            if (statsObj instanceof java.util.List) {
+                java.util.List<?> statsList = (java.util.List<?>) statsObj;
                 for (Object statObj : statsList) {
-                    if (!(statObj instanceof java.util.Map stat)) continue;
+                    if (!(statObj instanceof java.util.Map)) continue;
+                    java.util.Map<?,?> stat = (java.util.Map<?,?>) statObj;
                     Object statInfoObj = stat.get("stat");
-                    if (statInfoObj instanceof java.util.Map statInfo) {
+                    if (statInfoObj instanceof java.util.Map) {
+                        java.util.Map<?,?> statInfo = (java.util.Map<?,?>) statInfoObj;
                         Object statName = statInfo.get("name");
                         if ("hp".equals(statName)) {
                             Object baseStat = stat.get("base_stat");
-                            if (baseStat instanceof Integer i) hp = i;
-                            else if (baseStat instanceof Number n) hp = n.intValue();
+                            if (baseStat instanceof Integer) hp = (Integer) baseStat;
+                            else if (baseStat instanceof Number) hp = ((Number) baseStat).intValue();
                             break;
                         }
                     }
@@ -111,9 +118,10 @@ public class PokemonCardService {
             // Image
             String imageUrl = null;
             Object spritesObj = pokeData.get("sprites");
-            if (spritesObj instanceof java.util.Map spritesMap) {
+            if (spritesObj instanceof java.util.Map) {
+                java.util.Map<?,?> spritesMap = (java.util.Map<?,?>) spritesObj;
                 Object img = spritesMap.get("front_default");
-                if (img instanceof String s) imageUrl = s;
+                if (img instanceof String) imageUrl = (String) img;
             }
             // Rarity
             String rarity;
